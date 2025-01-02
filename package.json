@@ -1,39 +1,32 @@
 {
-  "name": "mim-systen-back-end",
-  "version": "0.0.1",
+  "name": "mim-systen-backend",
+  "version": "1.0.0",
   "description": "",
-  "author": "",
-  "private": true,
-  "license": "UNLICENSED",
+  "main": "index.js",
   "scripts": {
-    "build": "nest build",
-    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start": "nest start",
-    "start:dev": "nest start --watch",
-    "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main",
-    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix"
+    "start": "node ./src/server.js",
+    "dev": "nodemon ./src/server.js",
+    "migrate": "knex migrate:latest",
+    "migrateBack": "npx knex migrate:rollback"
   },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "dependencies": {
-    "@nestjs/common": "^10.0.0",
-    "@nestjs/core": "^10.0.0",
-    "@nestjs/platform-express": "^10.0.0",
-    "@prisma/client": "^5.22.0",
-    "reflect-metadata": "^0.2.0",
-    "rxjs": "^7.8.1"
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-async-errors": "^3.1.1",
+    "jsonwebtoken": "^9.0.2",
+    "knex": "^3.1.0",
+    "multer": "^1.4.5-lts.1",
+    "pm2": "^5.4.2",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^5.1.7"
   },
   "devDependencies": {
-    "@nestjs/cli": "^10.0.0",
-    "@nestjs/schematics": "^10.0.0",
-    "@nestjs/testing": "^10.0.0",
-    "@rocketseat/eslint-config": "^2.2.2",
-    "@types/express": "^5.0.0",
-    "@types/node": "^20.3.1",
-    "eslint": "^8.57.1",
-    "prisma": "^5.22.0",
-    "source-map-support": "^0.5.21",
-    "ts-node": "^10.9.1",
-    "tsconfig-paths": "^4.2.0",
-    "typescript": "^5.1.3"
+    "nodemon": "^3.1.4"
   }
 }
