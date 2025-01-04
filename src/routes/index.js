@@ -3,6 +3,9 @@ const { Router } = require("express");
 const sessionsRouter = require("./sessions.routes");
 
 const usersRouter = require("./users.routes");
+const presentersRouter = require("./presenters.routes");
+const presentersIndexToHorseRouter = require("./presentersIndexToHorse.routes");
+
 const avatarRouter = require("./avatar.routes");
 const horsesRouter = require("./horses.routes");
 const eventsRouter = require("./events.routes");
@@ -22,6 +25,9 @@ const routes = Router();
 routes.use("/sessions", sessionsRouter);
 
 routes.use('/users', usersRouter);
+routes.use('/presenters', presentersRouter);
+routes.use('/presentersIndexToHorse', presentersIndexToHorseRouter);
+
 routes.use('/avatar', avatarRouter);
 routes.use('/horses', horsesRouter);
 routes.use('/events', eventsRouter);
