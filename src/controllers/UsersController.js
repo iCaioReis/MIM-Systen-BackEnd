@@ -4,19 +4,40 @@ const AppError = require("../utils/AppError");
 
 class UsersController {
     async create(request, response) {
-        const { state, login, password, privilege, name, phone, gender, CPF, born, email, pix, favored, bank, agency, account } = request.body;
+        const { 
+            name, 
+            phone, 
+            gender, 
+            CPF, 
+            email, 
+            born, 
+            login, 
+            password,
+            password_confirm,
+            role, 
+            address, 
+            address_number, 
+            address_neighborhood, 
+            address_city,  
+            address_state, 
+            address_country, 
+            address_cep, 
+            address_observation, 
+            pix, 
+            favored, 
+            bank, 
+            agency, 
+            account 
+        } = request.body;
 
-        if (!login) {
-            throw new AppError("O campo Login é obrigatório.", 400);
+        if(password_confirm !== password){
+            throw new AppError("As senhas não conferem!.", 400);
         }
-        if (!password) {
-            throw new AppError("O campo Senha é obrigatório.", 400);
+        if (!login || !password) {
+            throw new AppError("Os campos Login e senha são obrigatórios.", 400);
         }
         if (!name) {
             throw new AppError("O campo Nome é obrigatório.", 400);
-        }
-        if (!phone) {
-            throw new AppError("O campo Telefone é obrigatório.", 400);
         }
     
         const checkUserExists = await knex("users").where({ login: login });
@@ -27,15 +48,44 @@ class UsersController {
 
         const hashedPassword = await hash(password, 8);
 
-        const [userId] = await knex("users").insert({ state, login, password: hashedPassword, privilege, name, phone, gender, CPF, born, email, pix, favored, bank, agency, account }).returning('id');
+        const [userId] = await knex("users").insert({ 
+            name, 
+            phone, 
+            gender, 
+            CPF, 
+            email, 
+            born, 
+            login, 
+            password: hashedPassword, 
+            role, 
+            address, 
+            address_number, 
+            address_neighborhood, 
+            address_city, 
+            address_state, 
+            address_country, 
+            address_cep, 
+            address_observation, 
+            pix, 
+            favored, 
+            bank, 
+            agency, 
+            account 
+        }).returning('id');
 
         return response.status(201).json({ id: userId });
     }
 
     async show(request, response) {
         const { id } = request.params;
+        const { last } = request.query;
 
-        const user = await knex("users").where({ id }).first();
+        let user = await knex("users").where({ id }).first();
+
+        if (last === "true") {
+            user = await knex("users").orderBy("created_at", "desc").first();
+        };
+
         const User = {...user.password = null, ...user }
 
         return response.json({User})
@@ -60,7 +110,7 @@ class UsersController {
     }
 
     async update(request, response) {
-        const { state, login, password, privilege, name, phone, gender, CPF, born, email, pix, favored, bank, agency, account } = request.body;
+        const { status, login, password, role, name, phone, gender, CPF, born, email, pix, favored, bank, agency, account } = request.body;
 
         if (!login) {
             throw new AppError("O campo Login é obrigatório.", 400);
@@ -68,11 +118,8 @@ class UsersController {
         if (!name) {
             throw new AppError("O campo Nome é obrigatório.", 400);
         }
-        if (!phone) {
-            throw new AppError("O campo Telefone é obrigatório.", 400);
-        }
     
-        const userUpdated = { state, login, password, privilege, name, phone, gender, CPF, born, email, pix, favored, bank, agency, account };
+        const userUpdated = { status, login, password, role, name, phone, gender, CPF, born, email, pix, favored, bank, agency, account };
         const { id } = request.params;
 
         const user = await knex("users").where({ id }).first();
