@@ -134,17 +134,14 @@ class HorsesController {
                 farm: horse.farm,
                 created_at: horse.created_at,
 
-                // inclua os campos do cavalo
                 presenter: {
                     id: horse.presenter_id,
                     name: horse.presenter_name,
-                    // inclua outros campos do presenter se necessário
                 }
             };
 
             return response.json({ Horse });
         }
-        // Caso o cavalo não seja encontrado
         return response.status(404).json({ error: "Horse not found" });
     }
 
