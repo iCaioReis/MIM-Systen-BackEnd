@@ -110,7 +110,32 @@ class UsersController {
     }
 
     async update(request, response) {
-        const { status, login, password, role, name, phone, gender, CPF, born, email, pix, favored, bank, agency, account } = request.body;
+        const { 
+            status,
+            name, 
+            phone, 
+            gender, 
+            CPF, 
+            email, 
+            born, 
+            login, 
+            password,
+            password_confirm,
+            role, 
+            address, 
+            address_number, 
+            address_neighborhood, 
+            address_city,  
+            address_state, 
+            address_country, 
+            address_cep, 
+            address_observation, 
+            pix, 
+            favored, 
+            bank, 
+            agency, 
+            account 
+        } = request.body;
 
         if (!login) {
             throw new AppError("O campo Login é obrigatório.", 400);
@@ -119,7 +144,31 @@ class UsersController {
             throw new AppError("O campo Nome é obrigatório.", 400);
         }
     
-        const userUpdated = { status, login, password, role, name, phone, gender, CPF, born, email, pix, favored, bank, agency, account };
+        const userUpdated = { 
+            status,
+            name, 
+            phone, 
+            gender, 
+            CPF, 
+            email, 
+            born, 
+            login, 
+            password,
+            role, 
+            address, 
+            address_number, 
+            address_neighborhood, 
+            address_city,  
+            address_state, 
+            address_country, 
+            address_cep, 
+            address_observation, 
+            pix, 
+            favored, 
+            bank, 
+            agency, 
+            account 
+        };
         const { id } = request.params;
 
         const user = await knex("users").where({ id }).first();
@@ -127,6 +176,10 @@ class UsersController {
         if (!password){
             userUpdated.password = user.password;
         } else {
+            if(password_confirm !== password){
+                throw new AppError("As senhas não conferem!.", 400);
+            }
+
             userUpdated.password = await hash(password, 8);
         }
 
