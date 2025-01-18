@@ -12,7 +12,7 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-  origin: ["http://localhost:5173", "http://127.0.0.1:5175", "http://localhost:3000", "http://192.168.25.8:8080"],
+  origin: ["http://localhost:5173", "http://127.0.0.1:5175", "http://localhost:3000", "http://192.168.25.8:8080", "https://mim-systen-front-2gz9zccu5-caios-projects-0cf29755.vercel.app"],
   credentials: true
 }));
 

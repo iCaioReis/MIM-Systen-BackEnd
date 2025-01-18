@@ -20,4 +20,4 @@ usersRoutes.put("/:id", usersController.update);
 //usersRoutes.put("/", ensureAuthenticated, usersController.update)
 //usersRoutes.patch("/avatar", ensureAuthenticated, upload.single("avatar"), userAvatarContoller.update)
 
-module.exports = usersRoutes;
+module.exports = usersRoutes; 
