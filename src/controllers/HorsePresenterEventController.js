@@ -15,6 +15,8 @@ class HorsePresenterEventController {
             throw new AppError("Erro ao tentar registrar", 400);
         }
 
+        const horseData = await knex('horses').where({id: horse_id}).first();
+       
         const recordAlreadyExists =
             await knex("horsesPresentersEvent")
                 .where({
@@ -27,7 +29,7 @@ class HorsePresenterEventController {
             throw new AppError("Já existe um registro deste animal neste evento!", 500);
         }
 
-        const [horseId] = await knex("horsesPresentersEvent").insert({ presenter_id, horse_id, event_id }).returning('id');
+        const [horseId] = await knex("horsesPresentersEvent").insert({ presenter_id, horse_id, event_id, category:`${horseData.gender}-${horseData.march}-${horseData.without_registration}`}).returning('id');
 
         return response.status(201).json({ id: horseId });
     }
@@ -51,6 +53,7 @@ class HorsePresenterEventController {
                     "h.id as horse_id",
                     "h.name as horse_name",
                     "h.born as horse_born",
+                    "h.gender as horse_gender",
                     "p.id as presenter_id",
                     "p.name as presenter_name"
                 )
@@ -63,6 +66,7 @@ class HorsePresenterEventController {
                     id: item.horse_id,
                     name: item.horse_name,
                     born: item.horse_born,
+                    gender: item.horse_gender,
                 },
                 presenter: {
                     id: item.presenter_id,
