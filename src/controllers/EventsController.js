@@ -36,7 +36,7 @@ class EventsController {
         let eventQuery = knex("events")
             .select(
                 "events.*",
-                "users.id as judge_id",
+                "users.id as user_id",
                 "users.name as user_name",
                 "seasons.id as season_id",
                 "seasons.name as season_name"
