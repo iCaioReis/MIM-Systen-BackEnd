@@ -3,7 +3,7 @@ const AppError = require("../utils/AppError");
 
 class EventsController {
     async create(request, response) {
-        const { status, name, start_date, end_date, modality, judge_id } = request.body;
+        const { status, name, start_date, end_date, modality, judge_id, season_id } = request.body;
 
         if (!name) {
             throw new AppError("O campo Nome é obrigatório.", 400);
@@ -20,8 +20,11 @@ class EventsController {
         if (!judge_id) {
             throw new AppError("O campo Juiz é obrigatório.", 400);
         }
+        if (!season_id) {
+            throw new AppError("O campo Temporada é obrigatório.", 400);
+        }
 
-        const [eventId] = await knex("events").insert({ status, name, start_date, end_date, modality, judge_id }).returning('id');
+        const [eventId] = await knex("events").insert({ status, name, start_date, end_date, modality, judge_id, season_id }).returning('id');
 
         return response.status(201).json({ id: eventId });
     }
@@ -34,9 +37,12 @@ class EventsController {
             .select(
                 "events.*",
                 "users.id as judge_id",
-                "users.name as user_name"
+                "users.name as user_name",
+                "seasons.id as season_id",
+                "seasons.name as season_name"
             )
-            .leftJoin("users", "events.judge_id", "users.id");
+            .leftJoin("users", "events.judge_id", "users.id")
+            .leftJoin("seasons", "events.season_id", "seasons.id");
 
         if (last === "true") {
             eventQuery = eventQuery.orderBy("events.created_at", "desc").first();
@@ -63,6 +69,11 @@ class EventsController {
                 judge: {
                     id: event.user_id,
                     name: event.user_name,
+                },
+
+                season: {
+                    id: event.season_id,
+                    name: event.season_name,
                 }
             };
 
@@ -82,7 +93,7 @@ class EventsController {
     }
 
     async update(request, response) {
-        const { status, name, start_date, end_date, modality, judge_id } = request.body;
+        const { status, name, start_date, end_date, modality, judge_id, season_id } = request.body;
         const { id } = request.params;
 
         if (!name) {
@@ -100,6 +111,9 @@ class EventsController {
         if (!judge_id) {
             throw new AppError("O campo Juiz é obrigatório.", 400);
         }
+        if (!season_id) {
+            throw new AppError("O campo Temporada é obrigatório.", 400);
+        }
 
         const event = await knex("events").where({ id }).first();
 
@@ -107,7 +121,7 @@ class EventsController {
             throw new AppError("Evento não encontrado!");
         }
 
-        await knex("events").update({ status, name, start_date, end_date, modality, judge_id }).where({ id: id });
+        await knex("events").update({ status, name, start_date, end_date, modality, judge_id, season_id }).where({ id: id });
 
         return response.status(201).json({ id });
     }
