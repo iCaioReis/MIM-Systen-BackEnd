@@ -13,6 +13,7 @@ const searchActiveHosesRouter = require("./searchActiveHoses.routes");
 const searchJudgeEventsRouter = require("./searchJudgeEvents.routes");
 const searchActiveSeasonsRouter = require("./searchActiveSeasons.routes");
 const horsePresenterEventRouter = require("./horsePresenterEvent.routes")
+const judgeHorsePresenterEventRouter = require("./judgeHorsePresenterEvent.routes")
 const finishEventRegistrationsRouter = require("./finishEventRegistrations.routes")
 
 const avatarRouter = require("./avatar.routes");
@@ -34,6 +35,7 @@ routes.use('/searchActiveSeasons', searchActiveSeasonsRouter);
 routes.use('/avatar', avatarRouter);
 routes.use('/events', eventsRouter);
 routes.use('/horsePresenterEvent', horsePresenterEventRouter);
+routes.use('/judgeHorsePresenterEvent', judgeHorsePresenterEventRouter);
 routes.use('/finishEventRegistrations', finishEventRegistrationsRouter);
 
 
