@@ -1,3 +1,5 @@
+const calculateHorseAge = require("../utils/calculateHorseAge")
+
 const knex = require("../database/knex");
 const AppError = require("../utils/AppError");
 
@@ -29,7 +31,13 @@ class HorsePresenterEventController {
             throw new AppError("Já existe um registro deste animal neste evento!", 500);
         }
 
-        const [horseId] = await knex("horsesPresentersEvent").insert({ presenter_id, horse_id, event_id, category:`${horseData.gender}-${horseData.march}-${horseData.without_registration}`}).returning('id');
+        let category = `${horseData.gender}-${horseData.march}-${horseData.without_registration}`
+
+        if(calculateHorseAge(horseData.born) <= 43 && horseData.gender != 'castrated' && horseData.march == 'shredded' && horseData.without_registration){
+            category = `${horseData.gender}-foal`
+        }
+
+        const [horseId] = await knex("horsesPresentersEvent").insert({ presenter_id, horse_id, event_id, category }).returning('id');
 
         return response.status(201).json({ id: horseId });
     }

@@ -4,19 +4,33 @@ const AppError = require("../utils/AppError");
 // Função sliceByCategory que você forneceu
 function sliceByCategory(data) {
   const categories = {
+    'castrated-shredded-0': [], // CASTRADO MARCHA PICADA COM REGISTRO
+
+    'stallion-shredded-1': [], // CAVALO MARCHA PICADA SEM REGISTRO
+
+    'stallion-foal': [], // POTRO CONTROLADO DE MARCHA PICADA
+
+    'stallion-shredded-0': [], // CAVALO MARCHA PICADA COM REGISTRO
+
+    'mare-shredded-1': [], // ÉGUA MARCHA PICADA SEM REGISTRO
+
+    'mare-foal': [], // POTRA CONTROLADA DE MARCHA PICADA
+
+    'mare-shredded-0': [], // ÉGUA MARCHA PICADA COM REGISTRO
+
+    'castrated-shredded-1': [], // CASTRADO MARCHA PICADA SEM REGISTRO
+
+    // MARCHA BATIDA
+
     'mare-beat-0': [],
     'mare-beat-1': [],
-    'mare-shredded-0': [],
-    'mare-shredded-1': [],
+
     'castrated-beat-0': [],
     'castrated-beat-1': [],
-    'castrated-shredded-0': [],
-    'castrated-shredded-1': [],
+
     'stallion-beat-0': [],
     'stallion-beat-1': [],
-    'stallion-shredded-0': [],
-    'stallion-shredded-1': [],
-  };
+  }
 
   // Popula as categorias
   data.forEach((item) => {
