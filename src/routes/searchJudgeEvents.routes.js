@@ -8,5 +8,6 @@ const SearchJudgeEventsRoutes = Router();
 const searchJudgeEventsController = new SearchJudgeEventsController();
 
 SearchJudgeEventsRoutes.get("/", searchJudgeEventsController.index);
+SearchJudgeEventsRoutes.get("/:id", searchJudgeEventsController.show);
 
 module.exports = SearchJudgeEventsRoutes;

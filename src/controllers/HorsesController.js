@@ -236,17 +236,18 @@ class HorsesController {
         const { id } = request.params;
 
         const horse = await knex("horses").where({ id }).first();
-
-        const horseChipAlreadyRegistered = await knex("horses").where({ chip }).first();
-
         if (!horse) {
             throw new AppError("Cavalo não encontrado!");
         };
 
-        if (horseChipAlreadyRegistered && horseChipAlreadyRegistered.id != id) {
-            throw new AppError("Este CHIP já está cadastrado!", 422);
-        }
+        if(chip != ''){
+            const horseChipAlreadyRegistered = await knex("horses").where({ chip }).first();
 
+            if (horseChipAlreadyRegistered && horseChipAlreadyRegistered.id != id) {
+                throw new AppError("Este CHIP já está cadastrado!", 422);
+            }
+        }
+        
         await knex("horses").update(horseUpdated).where({ id: id });
 
         return response.json(horseUpdated);
