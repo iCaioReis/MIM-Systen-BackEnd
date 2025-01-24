@@ -5,7 +5,6 @@ class SeasonsController {
     async create(request, response) {
         const {
             status,
-            created_at,
 
             image,
 
@@ -21,7 +20,6 @@ class SeasonsController {
 
         const [seasonId] = await knex("seasons").insert({
             status,
-            created_at,
 
             image,
 

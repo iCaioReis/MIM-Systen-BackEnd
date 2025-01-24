@@ -1,7 +1,6 @@
 const knex = require("../database/knex");
 const AppError = require("../utils/AppError");
 
-// Função sliceByCategory que você forneceu
 function sliceByCategory(data) {
   const categories = {
     'castrated-shredded-0': [], // CASTRADO MARCHA PICADA COM REGISTRO
@@ -22,70 +21,88 @@ function sliceByCategory(data) {
 
     // MARCHA BATIDA
 
-    'mare-beat-0': [],
-    'mare-beat-1': [],
+    'mare-beat-0': [], // ÉGUA MARCHA BATIDA COM REGISTRO
+    'mare-beat-1': [], // ÉGUA MARCHA BATIDA SEM REGISTRO
 
-    'castrated-beat-0': [],
-    'castrated-beat-1': [],
+    'castrated-beat-0': [], // CASTRADO MARCHA BATIDA COM REGISTRO
+    'castrated-beat-1': [], // CASTRADO MARCHA BATIDA SEM REGISTRO
 
-    'stallion-beat-0': [],
-    'stallion-beat-1': [],
+    'stallion-beat-0': [], // CAVALO MARCHA BATIDA COM REGISTRO
+    'stallion-beat-1': [], // CASTRADO MARCHA BATIDA SEM REGISTRO
   }
 
   // Popula as categorias
   data.forEach((item) => {
-    const categoryKey = item.category;
-    categories[categoryKey].push(item);
-  });
+    const categoryKey = item.category
+    categories[categoryKey].push(item)
+  })
 
   // Ordena as categorias
   Object.keys(categories).forEach((category) => {
-    categories[category].sort((a, b) => {
-      const dateA = new Date(a.horse.born);
-      const dateB = new Date(b.horse.born);
-      return dateB - dateA; // Mais novo para o mais velho
-    });
-  });
+    if (
+      category === 'castrated-shredded-0' ||
+      category === 'stallion-foal' ||
+      category === 'stallion-shredded-0' ||
+      category === 'mare-foal' ||
+      category === 'mare-shredded-0'
+    ) {
+      categories[category].sort((a, b) => {
+        const dateA = new Date(a.horse.born)
+        const dateB = new Date(b.horse.born)
+        return dateB - dateA // Mais novo para o mais velho
+      })
+    } else {
+      categories[category].sort((a, b) => {
+        const dateA = new Date(a.created_at)
+        const dateB = new Date(b.created_at)
+        return dateA - dateB // Mais velho para o mais novo
+      })
+    }
+  })
 
   // Atribui subcategorias
   Object.keys(categories).forEach((category) => {
-    const total = categories[category].length;
+    if (category === 'stallion-shredded-0' || category === 'mare-shredded-0') {
+      const total = categories[category].length
 
-    if (total <= 13) {
-      categories[category].forEach((obj) => (obj.sub_category = '0'));
-    } else if (total <= 20) {
-      const metade = Math.ceil(total / 2);
-      categories[category].forEach((obj, index) => {
-        obj.sub_category = index < metade ? '0' : '1';
-      });
+      if (total <= 13) {
+        categories[category].forEach((obj) => (obj.sub_category = '0'))
+      } else if (total <= 20) {
+        const metade = Math.ceil(total / 2)
+        categories[category].forEach((obj, index) => {
+          obj.sub_category = index < metade ? '0' : '1'
+        })
+      } else {
+        // Ajuste para divisão em 3 partes
+        const base = Math.floor(total / 3)
+        const remainder = total % 3
+
+        const sizeFirst = base + (remainder > 0 ? 1 : 0)
+        const sizeSecond = base + (remainder > 1 ? 1 : 0)
+
+        categories[category].forEach((obj, index) => {
+          if (index < sizeFirst) {
+            obj.sub_category = '0'
+          } else if (index < sizeFirst + sizeSecond) {
+            obj.sub_category = '1'
+          } else {
+            obj.sub_category = '2'
+          }
+        })
+      }
     } else {
-      // Ajuste para divisão em 3 partes
-      const base = Math.floor(total / 3);
-      const remainder = total % 3;
-
-      const sizeFirst = base + (remainder > 0 ? 1 : 0);
-      const sizeSecond = base + (remainder > 1 ? 1 : 0);
-
-      categories[category].forEach((obj, index) => {
-        if (index < sizeFirst) {
-          obj.sub_category = '0';
-        } else if (index < sizeFirst + sizeSecond) {
-          obj.sub_category = '1';
-        } else {
-          obj.sub_category = '2';
-        }
-      });
+      categories[category].forEach((obj) => (obj.sub_category = '1'))
     }
-  });
+  })
 
-  let currentNumber = 1;
+  let currentNumber = 1
   Object.keys(categories).forEach((category) => {
     categories[category].forEach((obj) => {
-      obj.vest = currentNumber++;
-    });
-  });
+      obj.vest = currentNumber++
+    })
+  })
 
-  return categories;
+  return categories
 }
 
 class EventsController {
