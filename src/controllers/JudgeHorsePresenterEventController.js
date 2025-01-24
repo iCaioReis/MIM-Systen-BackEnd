@@ -68,6 +68,7 @@ class JudgeHorsePresenterEventController {
                 // Add the item to the sub-category
                 subCategory.dataSubCategory.push({
                     id: item.id,
+                    category:item.category,
                     event_id: item.event_id,
                     presenter: {
                         id: item.presenter_id,
