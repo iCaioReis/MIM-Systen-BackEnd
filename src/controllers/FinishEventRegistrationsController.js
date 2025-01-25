@@ -44,7 +44,10 @@ function sliceByCategory(data) {
       category === 'stallion-foal' ||
       category === 'stallion-shredded-0' ||
       category === 'mare-foal' ||
-      category === 'mare-shredded-0'
+      category === 'mare-shredded-0' ||
+      category === 'mare-beat-0' ||
+      category === 'castrated-beat-0' ||
+      category === 'stallion-beat-0'
     ) {
       categories[category].sort((a, b) => {
         const dateA = new Date(a.horse.born)
