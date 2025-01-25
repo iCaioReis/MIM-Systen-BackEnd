@@ -176,7 +176,7 @@ class JudgeHorsePresenterEventController {
 
                 return knex('horsesPresentersEvent')
                     .where({ id })
-                    .update({ result, updated_at: knex.fn.now() });
+                    .update({ result, updated_at: knex.fn.now() , champion_of_champions_result: null});
             });
 
             await Promise.all(updatePromises);
