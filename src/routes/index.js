@@ -15,6 +15,7 @@ const searchActiveSeasonsRouter = require("./searchActiveSeasons.routes");
 const horsePresenterEventRouter = require("./horsePresenterEvent.routes")
 const judgeHorsePresenterEventRouter = require("./judgeHorsePresenterEvent.routes")
 const finishEventRegistrationsRouter = require("./finishEventRegistrations.routes")
+const resultsRouter = require("./results.routes")
 
 const saveChampionOfChampionsRouter = require("./saveChampionOfChampions.routes")
 
@@ -41,5 +42,6 @@ routes.use('/judgeHorsePresenterEvent', judgeHorsePresenterEventRouter);
 routes.use('/finishEventRegistrations', finishEventRegistrationsRouter);
 
 routes.use('/saveChampionOfChampions', saveChampionOfChampionsRouter);
+routes.use('/results', resultsRouter);
 
 module.exports = routes;
