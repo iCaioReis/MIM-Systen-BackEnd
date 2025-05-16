@@ -1,6 +1,6 @@
 const knex = require("../database/knex");
 const AppError = require("../utils/AppError");
-const { CalculatePoints } = require("../utils/calculatePoints");
+const { CalculatePoints, CalculateChampionsPoints } = require("../utils/calculatePoints");
 
 class SeasonPointsController {
     async show(request, response) {
@@ -26,7 +26,7 @@ class SeasonPointsController {
 
         eventsPoints.forEach(item => {
             const isFirstEvent = item.event_id === firstEventId;
-            let basePoints = CalculatePoints(item.result) || 0;
+            let basePoints = CalculatePoints(item.result) + CalculateChampionsPoints(item.champion_of_champions_result) || 0;
 
             // Aplica multiplicador SOMENTE para cavalos no primeiro evento
             const horsePoints = isFirstEvent ? basePoints * 2 : basePoints;
